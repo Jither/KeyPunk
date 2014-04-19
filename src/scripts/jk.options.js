@@ -10,6 +10,8 @@
 		
 		var 
 			$showPassword		= $("#show-password"),
+			$storeMasterPassword= $("#store-master-password"),
+
 			$useKdf 			= $("#use-kdf"),
 			$kdf 				= $("#kdf"),
 			$kdfIterations 		= $("#kdf-iterations"),
@@ -37,6 +39,7 @@
 			}
 
 			$showPassword.on("change", showPasswordChanged);
+			$storeMasterPassword.on("change", storeMasterPasswordChanged);
 
 			$useKdf.on("change", useKdfChanged);
 			$kdf.on("change", kdfChanged);
@@ -86,6 +89,11 @@
 		function syncedDataAvailableLoaded(isAvailable)
 		{
 			_syncedDataAvailable = isAvailable;
+		}
+
+		function storeMasterPasswordChanged()
+		{
+			settings.storeMasterPassword($storeMasterPassword.prop("checked"));
 		}
 
 		function showPasswordChanged()
@@ -336,6 +344,8 @@
 			var useKdf = settings.useKdf();
 
 			$showPassword.prop("checked", settings.showPassword());
+			$storeMasterPassword.prop("checked", settings.storeMasterPassword());
+			
 			$kdf.val(settings.kdf());
 			$kdfIterations.val(settings.kdfIterations());
 			$kdfSalt.val(settings.kdfSalt());

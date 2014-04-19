@@ -2,12 +2,13 @@ html, body
 {
 	margin: 0;
 	padding: 0;
+	background: #ffffff;
+	color: #303942;
 }
 
-body
+body, button, input, select
 {
-	font: 14px 'Chrome Droid Sans', 'Droid Sans Fallback', 'Lucida Grande', sans-serif;
-	color: #303942;
+	font: 12px 'Chrome Droid Sans', 'Droid Sans Fallback', 'Lucida Grande', sans-serif;
 }
 
 p, h1, h2, h3, h4, h5, h6
@@ -34,8 +35,8 @@ h1
 
 h2
 {
-	font-size: 18px;
-	margin-bottom: 10px;
+	font-size: 16px;
+	margin-bottom: 15px;
 }
 
 h3
@@ -57,7 +58,10 @@ div.content
 
 section
 {
-	margin-bottom: 30px;
+	margin-bottom: 20px;
+	background: #f0f0f0;
+	border-radius: 5px;
+	padding: 10px;
 }
 
 section > div

@@ -90,6 +90,11 @@
 
 		function storeMasterPassword(value)
 		{
+			if (value === false)
+			{
+				// Since the master password shouldn't be stored, clear it from memory now
+				masterPassword("");
+			}
 			return localSetting("storeMasterPassword", value);
 		}
 
@@ -219,16 +224,18 @@
 		return {
 			load: load,
 			save: save,
+			
 			masterPassword: masterPassword,
 
+			showPassword: showPassword,
+			rewireInput: rewireInput,
 			useKdf: useKdf,
 			kdf: kdf,
 			kdfSalt: kdfSalt,
 			kdfIterations: kdfIterations,
 
+			storeMasterPassword: storeMasterPassword,
 			masterChecksum: masterChecksum,
-			showPassword: showPassword,
-			rewireInput: rewireInput,
 
 			importData: importData,
 			exportData: exportData

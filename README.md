@@ -162,7 +162,7 @@ Storage security considerations
 ===============================
 
 By default, KeyPunk is set up for a compromise between security and convenience, but
-is *is* opinionated about certain security considerations:
+it *is* opinionated about certain security considerations:
 
 - The master password cannot be stored anywhere except in memory. This means it lives
   for the duration of the browser session. Even this can (in time) be disabled, requiring
