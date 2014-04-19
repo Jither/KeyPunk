@@ -1,0 +1,234 @@
+html, body, h1, h2, h3, h4, h5, h6, p
+{
+	/*font: 14px Tahoma, Geneva, sans-serif;*/
+	margin: 0;
+	padding: 0;
+}
+
+html, body, input, select, option, textarea
+{
+	font: 13px 'Chrome Droid Sans', 'Droid Sans Fallback', 'Lucida Grande', sans-serif;
+}
+
+html
+{
+	min-height: 300px;
+}
+
+a
+{
+	color: #0074D9;
+	text-decoration: none;
+}
+
+a:hover
+{
+	text-decoration: underline;
+}
+
+h2
+{
+	font-weight: normal;
+	color: #333333;
+	padding: 0 0 10px 0;
+	margin: 0 0 10px 0;
+	border-bottom: 1px solid #eeeeee;
+}
+
+section
+{
+	width: 300px;
+}
+
+section > div > label
+{
+	display: block;
+	position: relative;
+	margin-bottom: 5px;
+	width: 100%;
+}
+
+p label
+{
+	vertical-align: middle;
+}
+
+label button
+{
+	/* Reset style */
+	font: inherit;
+	padding: 0;
+	margin: 0;
+	border: 0;
+	background: transparent;
+	outline: 0;
+	cursor: pointer;
+
+	display: block;
+	position: absolute;
+	bottom: 0;
+	right: 0;
+
+	font-size: 11px;
+}
+
+label button:disabled
+{
+	color: #cccccc;
+}
+
+input:not([type="checkbox"]):not([type="hidden"]), select, textarea
+{
+	border: 1px solid #bbbbbb;
+	margin: 0;
+}
+
+input[type="checkbox"]
+{
+	vertical-align: middle;
+}
+
+section > div > input:not([type="checkbox"]):not([type="hidden"]),
+section > div > textarea,
+section > div > select
+{
+	display: block;
+	width: 100%;
+}
+
+section
+{
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+	display: none;
+	padding: 5px 5px 30px 5px;
+}
+
+section > div {
+	margin: 0 0 10px 0;
+}
+
+#input-explanation
+{
+	height: 20px;
+	font-style: italic;
+}
+
+select, textarea, input
+{
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    padding: 2px;
+}
+
+section > div > textarea
+{
+	max-width: 300px;
+	height: 80px;
+}
+
+input.error
+{
+	background-color: #ffeeee;
+	border: 1px solid #660000 !important;
+}
+
+input.verified
+{
+	background-color: #eeffdd;
+	border: 1px solid #006600 !important;
+}
+
+input.rewired
+{
+	color: #aaaaaa;
+}
+
+nav
+{
+	padding: 5px;
+	margin-bottom: 5px;
+}
+
+nav ul
+{
+	list-style-type: none;
+	padding: 0;
+	margin: 0;
+	overflow: hidden; /* clear float */
+}
+
+nav li
+{
+	float: left;
+}
+
+nav a, nav a:hover
+{
+	font-size: 14px;
+	display: block;
+	padding: 4px 10px;
+	text-decoration: none;
+	color: #333333;
+	border-bottom: 4px transparent;
+}
+
+nav a.active
+{
+	border-bottom: 4px solid #0074D9;
+}
+
+input.rewired
+{
+	background: url(../images/rewire.png) no-repeat right 2px center;
+	padding-right: 20px;
+}
+
+#rewire-input
+{
+	height: 240px;
+}
+
+#output-password
+{
+	display: none;
+}
+
+#output-clipboard
+{
+	position: absolute;
+	left: -1000px;
+	top: -1000px;
+}
+
+#status
+{
+	position: fixed;
+	width: 100%;
+	padding: 2px 5px;
+	bottom: 0;
+	height: 18px;
+	background: #0074D9;
+	color: #ffffff;
+}
+
+#about
+{
+	padding-left: 10px;
+	padding-right: 10px;
+}
+
+#about p
+{
+	margin-bottom: 10px;
+}
+
+#about ul
+{
+	list-style-type: square;
+	list-style-position: inside;
+	padding: 0 0 5px 0.5em;
+	margin: 0;
+}

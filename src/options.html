@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>KeyPunk Options</title>
+		<link rel="stylesheet" href="styles/options.css" />
+		<link rel="stylesheet" href="styles/dialogs.css" />
+	</head>
+	<body>
+		<header>
+			<h1>KeyPunk Options</h1>
+		</header>
+
+		<div class="content">
+			<section>
+				<h2>General</h2>
+				<div>
+					<p><input id="show-password" type="checkbox" /> <label for="show-password">Show password</label></p>
+					<p class="description">Shows generated password in popup. This may also be toggled directly from the popup.</p>
+				</div>
+			</section>
+
+			<section>
+				<h2>Key Derivation</h2>
+				<div>
+					<p><input id="use-kdf" type="checkbox" /> <label for="use-kdf">Derive key from master password</label></p>
+					<p class="description">When generating passwords, this uses a key derived from the master password rather than the master password itself - strenghtening it against attempts to deduce the master password from a brute force attack on a generated password. It does, however, use more CPU time whenever the master password is entered.</p>
+				</div>
+				<div>
+					<label for="kdf">Key Derivation Function</label>
+					<select id="kdf"></select>
+				</div>
+				<div>
+					<label for="kdf-iterations">Iterations</label>
+					<input id="kdf-iterations" type="number" step="1" />
+					<p class="description">Be aware that a large number of iterations may freeze the browser for extended periods of time when master password is entered.</p>
+				</div>
+				<div>
+					<label for="kdf-salt">Salt</label>
+					<input id="kdf-salt" type="text" />
+					<p class="description">Should be a hexadecimal string - there's no validation of this yet.</p>
+				</div>
+			</section>
+
+			<section>
+				<h2>Synchronize</h2>
+				<div>
+					<p id="synced-data-available">Retrieving synchronization status...</p>
+				</div>
+				<div>
+					<p><input id="sync" type="checkbox" /> <label for="sync">Synchronize profiles and settings</label></p>
+				</div>
+				<div>
+					<button id="clear-sync-storage">Clear synchronized storage</button>
+					<p class="description">Clears the remote storage of all data.</p>
+				</div>
+			</section>
+		</div>
+
+		<script src="scripts/jquery-2.1.0.min.js"></script>
+		<script src="scripts/underscore-min.js"></script>
+		<script src="scripts/crypto/sjcl.js"></script>
+		<script src="scripts/jk.constants.js"></script>
+		<script src="scripts/jk.utils.js"></script>
+		<script src="scripts/jk.chrome.js"></script>
+		<script src="scripts/jk.log.js"></script>
+		<script src="scripts/jk.crypt.js"></script>
+		<script src="scripts/jk.storage.js"></script>
+		<script src="scripts/jk.settings.js"></script>
+		<script src="scripts/jk.profiles.js"></script>
+		<script src="scripts/jk.dialogs.js"></script>
+		<script src="scripts/jk.options.js"></script>
+	</body>
+</html>

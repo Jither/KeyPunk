@@ -1,0 +1,96 @@
+body
+{
+	font: 14px 'Chrome Droid Sans', 'Droid Sans Fallback', 'Lucida Grande', sans-serif;
+	color: #303942;
+}
+
+p, h1, h2, h3, h4, h5, h6
+{
+	margin: 0;
+	padding: 0;
+	line-height: 1;
+	font-weight: normal;
+}
+
+header
+{
+	background-image: -webkit-linear-gradient(#ffffff, #ffffff 40%, rgba(255, 255, 255, 0.92));
+	position: fixed;
+	width: 100%;
+	padding: 20px;
+	border-bottom: 1px solid #eeeeee;
+}
+
+h1
+{
+	font-size: 18px;
+}
+
+h2
+{
+	font-size: 18px;
+	margin-bottom: 10px;
+}
+
+h3
+{
+	font-size: 14px;
+}
+
+p.description
+{
+	color: #a0a0a0;
+	margin: 5px 0;
+}
+
+div.content
+{
+	padding: 80px 20px 20px 20px;
+	line-height: 1.5;
+}
+
+section
+{
+	margin-bottom: 30px;
+}
+
+section > div
+{
+	margin: 0 0 20px 10px;
+	margin-left: 10px;
+	max-width: 700px;
+	border-collapse: collapse;
+}
+
+section > div > label
+{
+	display: block;
+}
+
+section > div > select,
+section > div > input,
+section > div > textarea,
+section > div > button
+{
+	display: block;
+}
+
+input[type="checkbox"]
+{
+	vertical-align: middle;
+}
+
+input:not([type="checkbox"]), select
+{
+	width: 300px;
+}
+
+input[type="number"]
+{
+	width: 80px;
+}
+
+label
+{
+	vertical-align: middle;
+}

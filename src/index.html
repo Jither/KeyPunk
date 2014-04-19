@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title>KeyPunk</title>
+		<link rel="stylesheet" href="styles/main.css" />
+		<link rel="stylesheet" href="styles/dialogs.css" />
+	</head>
+	<body>
+		<nav>
+			<ul>
+				<li><a href="#main">Main</a></li>
+				<li><a href="#profiles">Profiles</a></li>
+				<li><a href="#rewire">Rewire</a></li>
+				<li><a href="#about">About</a></li>
+			</ul>
+		</nav>
+
+		<section id="main">
+			<div>
+				<label for="master">Master password <button id="checksum">Save checksum</button></label>
+				<input id="master" type="password" />
+			</div>
+			<div id="confirm-row">
+				<label for="confirm">Confirm password</label>
+				<input id="confirm" type="password" />
+			</div>
+			<div>
+				<label for="profile">Profile</label>
+				<select id="profile" class="profile"></select>
+			</div>
+			<div>
+				<label for="input">Input</label>
+				<input id="input" type="text" />
+			</div>
+			<div>
+				<label for="output">Password</label>
+				<input id="output" type="text" readonly="true" />
+				<input id="output-password" type="password" readonly="true" />
+				<input id="output-clipboard" type="text" />
+			</div>
+			<div>
+				<p>
+					<input id="show-password" type="checkbox" />
+					<label for="show-password">Show Password</label>
+				</p>
+			</div>
+			<div>
+				<button id="fill">Fill</button>
+				<button id="copy">Copy</button>
+			</div>
+		</section>
+
+		<section id="profiles">
+			<div>
+				<label for="profiles-profile">Profile</label>
+				<select id="profiles-profile" class="profile"></select>
+			</div>
+			<div>
+				<label for="algorithm">Algorithm</label>
+				<div>
+					<select id="algorithm"></select>
+					<label for="hmac">HMAC</label>
+					<input id="hmac" type="checkbox" />
+				</div>
+			</div>
+			<div>
+				<label for="password-length">Password Length</label>
+				<input id="password-length" type="number" pattern="\d+" min="1" max="2048" />
+			</div>
+			<div>
+				<label for="alphabet">Alphabet</label>
+				<textarea id="alphabet"></textarea>
+				<p>
+					<input id="use-all-sets" type="checkbox" />
+					<label for="use-all-sets">Must use all alphabet sets</label>
+				</p>
+			</div>
+			<div>
+				<label for="domains">Domains</label>
+				<textarea id="domains"></textarea>
+			</div>
+			<div>
+				<label for="modifier">Modifier</label>
+				<input id="modifier" type="text" />
+			</div>
+			<div>
+				<button id="save">Save</button>
+				<button id="duplicate">Duplicate</button>
+				<button id="rename">Rename</button>
+				<button id="remove">Delete</button>
+			</div>
+		</section>
+
+		<section id="rewire">
+			<div>
+				<label for="rewire-input">Rewire inputs</label>
+				<textarea id="rewire-input"></textarea>
+			</div>
+		</section>
+
+		<section id="about">
+			<h2>KeyPunk</h2>
+			<p>Copyright &copy; 2014 Jimmi Thøgersen</p>
+			<p>Based on ideas from <a href="http://www.passwordmaker.org">PasswordMaker</a>.</p>
+
+			<p>Includes code from:</p>
+			<ul>
+				<li><a href="https://code.google.com/p/crypto-js/">Crypto-JS</a></li>
+				<li><a href="http://bitwiseshiftleft.github.io/sjcl/">Stanford Javascript Cryptographic Library</a></li>
+				<li><a href="http://jquery.com/">jQuery</a></li>
+				<li><a href="http://underscorejs.org/">Underscore.js</a></li>
+			</ul>
+		</section>
+
+		<section id="fatal-error">
+			<h2>Oops!</h2>
+			<div id="fatal-error-message"></div>
+		</section>
+
+		<footer id="status">&nbsp;</footer>
+
+		<script src="scripts/jquery-2.1.0.min.js"></script>
+		<script src="scripts/underscore-min.js"></script>
+		
+		<!--script src="scripts/crypto/core.js"></script>
+		<script src="scripts/crypto/x64-core.js"></script>
+		<script src="scripts/crypto/hmac.js"></script>
+		<script src="scripts/crypto/ripemd160.js"></script>
+		<script src="scripts/crypto/sha1.js"></script>
+		<script src="scripts/crypto/sha256.js"></script>
+		<script src="scripts/crypto/sha512.js"></script>
+		<script src="scripts/crypto/sha224.js"></script>
+		<script src="scripts/crypto/sha384.js"></script>
+		<script src="scripts/crypto/sha3.js"></script-->
+		<script src="scripts/crypto/crypto.min.js"></script>
+		<script src="scripts/crypto/sjcl.js"></script>
+
+		<script src="scripts/jk.constants.js"></script>
+		<script src="scripts/jk.utils.js"></script>
+		<script src="scripts/jk.chrome.js"></script>
+		<script src="scripts/jk.crypt.js"></script>
+		<script src="scripts/jk.log.js"></script>
+		<script src="scripts/jk.storage.js"></script>
+		<script src="scripts/jk.settings.js"></script>
+		<script src="scripts/jk.core.js"></script>
+		<script src="scripts/jk.profiles.js"></script>
+		<script src="scripts/jk.dialogs.js"></script>
+		<script src="scripts/jk.ui.js"></script>
+		<script src="scripts/jk.main.js"></script>
+	</body>
+</html>

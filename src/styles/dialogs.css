@@ -1,0 +1,52 @@
+.dialog
+{
+	font-size: 12px;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	background: #eeeeee;
+	border: 1px solid #dddddd;
+	border-radius: 5px;
+	width: 280px;
+	-webkit-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+}
+
+.dialog h3
+{
+	font-size: 14px;
+	padding: 5px 10px;
+	font-weight: normal;
+	background: #0074D9;
+	color: #ffffff;
+}
+
+.dialog .content
+{
+	padding: 10px;
+	margin: 0;
+}
+
+.dialog .content p
+{
+	margin: 0 0 5px 0;
+}
+
+.dialog .content input
+{
+	display: block;
+	width: 100%;
+}
+
+.dialog .buttons
+{
+	padding: 2px 10px;
+	background: #0074D9;
+	color: #ffffff;
+	text-align: right;
+}
+
+.dialog .buttons button
+{
+	padding: 2px 10px;
+}

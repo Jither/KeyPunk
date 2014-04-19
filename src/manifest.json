@@ -1,0 +1,34 @@
+{
+	"manifest_version": 2,
+	"name": "KeyPunk",
+	"description": "Password Generator",
+	"version": "0.9",
+
+	"permissions":
+	[
+		"clipboardWrite",
+		"storage",
+		"tabs"
+	],
+
+	"background":
+	{
+	    "scripts": ["scripts/jk.background.js"]
+	},
+
+	"options_page": "options.html",
+
+	"content_scripts":
+	[
+	    {
+	    	"matches": [ "http://*/*", "https://*/*" ],
+	    	"js": ["scripts/jk.contentscript.js"]
+	    }
+  	],
+
+	"browser_action":
+	{
+		"default_icon": "images/icon.png",
+		"default_popup": "index.html"
+	}
+}

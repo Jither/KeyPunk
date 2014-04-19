@@ -1,0 +1,14 @@
+{
+	"name": "KeyPunk",
+	"version": "0.9.0",
+	"author": "Jimmi Thøgersen",
+	"private": "true",
+
+	"devDependencies": {
+		"grunt":						"~0.4.4",
+		"grunt-contrib-uglify":			"*",
+		"grunt-contrib-jshint":			"*",
+		"grunt-htmlhint":				"*",
+		"matchdep":						"*"
+	}
+}
