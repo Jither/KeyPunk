@@ -56,12 +56,54 @@
 			return task.promise();
 		}
 
-		function makeDialog(headerText, buttons)
+		function importData()
+		{
+			var task = new $.Deferred();
+
+			var $input = $("<textarea></textarea>");
+
+			var $dlg = makeDialog("KeyPunk",
+			{
+				"OK": function() { task.resolve($input.val()); },
+				"Cancel": function() { task.resolve(false); }
+			}, "wide");
+
+			$dlg.append('Insert JSON to import:');
+			$dlg.append($input);
+			$input.focus();
+
+			return task.promise();
+		}
+
+		function exportData(data)
+		{
+			var task = new $.Deferred();
+
+			var $input = $(utils.format("<textarea>{0}</textarea>", data));
+
+			var $dlg = makeDialog("KeyPunk",
+			{
+				"OK": function() { task.resolve(); }
+			}, "wide");
+
+			$dlg.append('Copy exported JSON from this text box:');
+			$dlg.append($input);
+			$input.focus();
+
+			return task.promise();
+		}
+
+		function makeDialog(headerText, buttons, additionalClass)
 		{
 			var $result = $('<div class="dialog"></div>');
 			var $header = $(utils.format('<h3>{0}</h3>', headerText));
 			var $content = $('<div class="content"></div>');
 			var $buttons = $('<div class="buttons"></div>');
+
+			if (additionalClass)
+			{
+				$result.addClass(additionalClass);
+			}
 
 			for (var key in buttons)
 			{
@@ -92,7 +134,9 @@
 		return {
 			alert: alert,
 			prompt: prompt,
-			confirm: confirm
+			confirm: confirm,
+			importData: importData,
+			exportData: exportData
 		};
 
 	}(jk.utils));

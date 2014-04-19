@@ -1,3 +1,9 @@
+html, body
+{
+	margin: 0;
+	padding: 0;
+}
+
 body
 {
 	font: 14px 'Chrome Droid Sans', 'Droid Sans Fallback', 'Lucida Grande', sans-serif;
@@ -69,8 +75,7 @@ section > div > label
 
 section > div > select,
 section > div > input,
-section > div > textarea,
-section > div > button
+section > div > textarea
 {
 	display: block;
 }

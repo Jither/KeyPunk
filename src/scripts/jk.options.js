@@ -19,6 +19,9 @@
 			$sync 				= $("#sync"),
 			$clearSyncStorage	= $("#clear-sync-storage"),
 
+			$import				= $("#import"),
+			$export				= $("#export"),
+
 			_clientSynced,
 			_syncedDataAvailable
 			;
@@ -42,6 +45,9 @@
 
 			$sync.on("change", syncChanged);
 			$clearSyncStorage.click(clearSyncStorageClicked);
+
+			$import.click(importClicked);
+			$export.click(exportClicked);
 
 			$.when(
 				settings.load().done(updateState),
@@ -279,6 +285,48 @@
 					{
 						updateSyncState();
 					}
+				}
+			);
+		}
+
+		function importClicked()
+		{
+			profiles.load().then(
+				function()
+				{
+					dialogs.importData().then(
+						function(json)
+						{
+							var values;
+							try
+							{
+								values = JSON.parse(json);
+							}
+							catch (error)
+							{
+								dialogs.alert("Error in import data: " + error);
+								return;
+							}
+
+							settings.importData(values.settings);
+							profiles.importData(values.profiles);
+						}
+					);
+				}
+			);
+		}
+
+		function exportClicked()
+		{
+			profiles.load().then(
+				function() {
+					var values =
+					{
+						settings: settings.exportData(),
+						profiles: profiles.exportData()
+					};
+
+					dialogs.exportData(JSON.stringify(values, null, "    "));
 				}
 			);
 		}

@@ -171,6 +171,21 @@
 			return profiles;
 		}
 
+		function exportData()
+		{
+			return profiles;
+		}
+
+		function importData(data)
+		{
+			var task = $.Deferred();
+
+			$.extend(profiles, data);
+			save().then(task.resolve);
+
+			return task.promise();
+		}
+
 		function getById(id)
 		{
 			return profiles[id];
@@ -187,7 +202,9 @@
 			removeProfile: removeProfile,
 			getAll: getAll,
 			getById: getById,
-			getProfileIdForInput: getProfileIdForInput
+			getProfileIdForInput: getProfileIdForInput,
+			importData: importData,
+			exportData: exportData
 		};
 	}(jk.storage, jk.log));
 	

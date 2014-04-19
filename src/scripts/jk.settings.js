@@ -198,6 +198,24 @@
 			$(jk.settings).trigger({ type: "change", key: key, value: value });
 		}
 
+		function importData(data)
+		{
+			var task = new $.Deferred();
+
+			$.extend(_syncedSettings, data.synced);
+			$.extend(_localSettings, data.local);
+
+			save().then(task.resolve);
+		}
+
+		function exportData()
+		{
+			return {
+				synced: _syncedSettings,
+				local: _localSettings
+			};
+		}
+
 		return {
 			load: load,
 			save: save,
@@ -211,6 +229,9 @@
 			masterChecksum: masterChecksum,
 			showPassword: showPassword,
 			rewireInput: rewireInput,
+
+			importData: importData,
+			exportData: exportData
 		};
 	}(jk.storage, jk.profiles, jk.chrome, jk.log));
 
