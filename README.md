@@ -29,7 +29,7 @@ me to make my own:
   - RIPEMD-160
   - Keccak (the eventual SHA-3 as it worked after round 3 of the NIST competition) -
     224, 256, 384, 512
-  - SHA-3 (the current implementation, pending the finalization of FIPS-202) - 224, 
+  - SHA-3 (as it looks right now, April 2014, pending the finalization of FIPS-202) - 224, 
     256, 384, 512
   - HMAC versions of all the above
 
@@ -127,7 +127,7 @@ cannot be as high as is usually recommended, calculating, say, 1000 iterations o
 still takes more time than no iterations. And it will need to be done for every attempted
 master password.
 
-For key derivation, KeyPunk uses PBKDF2 with SHA-512 as the underlying hash function.
+For key derivation, KeyPunk uses PBKDF2 with SHA-256 as the underlying hash function.
 
 PBKDF2 is mostly known for its use in hashing passwords on the authenticating side - e.g.
 for database storage. In that use case, the best practice is to make a cryptographically
@@ -188,8 +188,8 @@ is *is* opinionated about certain security considerations:
 Why "KeyPunk"?
 ==============
 
-I generally dislike the use of "punk" as a marketing label. But I'm not doing marketing.
+I *really* dislike the use of "punk" as a marketing label. But I'm not doing marketing.
 
 KeyPunk is really a play on "keypunch" - which has little to do with what KeyPunk does, but
-was the one somewhat interesting name I could come up with. The product was more important
-than the name. :-)
+was the one somewhat interesting name related to passwords and keys that I could come up
+with. The "product" was more important than the name. :-)
