@@ -157,11 +157,12 @@
 			$master.on("input", passwordChanged);
 			$confirm.on("input", passwordChanged);
 			$input.on("input", inputChanged);
+			$input.on("keypress", inputKeyPressed);
 			$profile.on("change", mainProfileChanged);
 			$showPassword.on("change", showPasswordChanged);
 
 			$copy.click(copyClicked);
-			$fill.click(fillClicked);
+			$fill.click(fillPasswords);
 			$checksum.click(checksumClicked);
 
 			var masterPassword = settings.masterPassword();
@@ -213,6 +214,16 @@
 			updateStateMain();
 		}
 
+		function inputKeyPressed(e)
+		{
+			switch (e.which)
+			{
+				case 13:
+					fillPasswords();
+					break;
+			}
+		}
+
 		function updateRewiredState()
 		{
 			var isRewired = !!_rewiredInput;
@@ -245,7 +256,7 @@
 			$output.toggle(showPassword);
 			$outputPassword.toggle(!showPassword);
 
-			var hasOutput = !!$output.val();
+			var hasOutput = !!_currentOutput;
 			$copy.prop("disabled", !hasOutput);
 			$fill.prop("disabled", !(hasOutput && _hasPasswordInputs));
 			
@@ -283,9 +294,14 @@
 		}
 
 		// Fills password fields on current tab with output
-		function fillClicked()
+		function fillPasswords()
 		{
 			log.debug("fill");
+
+			if (!_currentOutput || !_hasPasswordInputs)
+			{
+				return;
+			}
 
 			chromeHelper.fillPasswords(_currentOutput);
 			window.close();

@@ -16,7 +16,7 @@
 			</ul>
 		</nav>
 
-		<section id="main">
+		<section id="main" spellcheck="false">
 			<div>
 				<label for="master">Master password <button id="checksum">Save checksum</button></label>
 				<input id="master" type="password" />
@@ -35,8 +35,8 @@
 			</div>
 			<div>
 				<label for="output">Password</label>
-				<input id="output" type="text" readonly="true" />
-				<input id="output-password" type="password" readonly="true" />
+				<input id="output" type="text" readonly="readonly" />
+				<input id="output-password" type="password" readonly="readonly" />
 				<input id="output-clipboard" type="text" />
 			</div>
 			<div>
@@ -51,13 +51,13 @@
 			</div>
 		</section>
 
-		<section id="profiles">
+		<section id="profiles" spellcheck="false">
 			<div>
 				<label for="profiles-profile">Profile</label>
 				<select id="profiles-profile" class="profile"></select>
 			</div>
 			<div>
-				<label for="algorithm">Algorithm</label>
+				<label for="algorithm">Hash</label>
 				<div>
 					<select id="algorithm"></select>
 					<label for="hmac">HMAC</label>
@@ -92,7 +92,7 @@
 			</div>
 		</section>
 
-		<section id="rewire">
+		<section id="rewire" spellcheck="false">
 			<div>
 				<label for="rewire-input">Rewire inputs</label>
 				<textarea id="rewire-input"></textarea>

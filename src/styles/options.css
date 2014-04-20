@@ -22,10 +22,17 @@ p, h1, h2, h3, h4, h5, h6
 header
 {
 	background-image: -webkit-linear-gradient(#ffffff, #ffffff 40%, rgba(255, 255, 255, 0.92));
+	background-image: linear-gradient(#ffffff, #ffffff 40%, rgba(255, 255, 255, 0.92));
 	position: fixed;
 	width: 100%;
 	padding: 20px;
 	border-bottom: 1px solid #eeeeee;
+}
+
+select
+{
+	background-image: -webkit-linear-gradient(#ededed, #ededed 38%, #dedede);	
+	background-image: linear-gradient(#ededed, #ededed 38%, #dedede);	
 }
 
 h1
