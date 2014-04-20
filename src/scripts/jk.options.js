@@ -356,12 +356,16 @@
 			function step1_showDialog()
 			{
 				dialogs.importData()
-					.then(step2_parse)
-					.fail(importFailed);
+					.done(step2_parse);
 			}
 
 			function step2_parse(json)
 			{
+				if (!json) 
+				{
+					return;
+				}
+				
 				var values;
 				try
 				{
