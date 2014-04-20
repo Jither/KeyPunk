@@ -193,7 +193,8 @@
 				storage.save("local_settings", _localSettings, /* forceLocal */ true),
 				storage.save("settings", _syncedSettings)
 			)
-			.then(task.resolve, function(error) { task.fail(error); });
+				.done(task.resolve)
+				.fail(task.reject);
 
 			return task.promise();
 		}

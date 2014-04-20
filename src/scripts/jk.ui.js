@@ -108,13 +108,13 @@
 
 		function loadFailed(error)
 		{
-			switch (error)
+			switch (error.type)
 			{
 				case constants.ERRORS.decrypt:
 					fatalError("Failed decrypting settings/profiles. Please check your synchronization password.");
 					break;
 				default:
-					fatalError(error);
+					fatalError(error.message);
 					break;
 			}
 		}

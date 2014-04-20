@@ -44,7 +44,9 @@
 
 		ERRORS:
 		{
-			decrypt: "decrypt"
+			decrypt: "decrypt",
+			syncNotSupported: "syncNotSupported",
+			storage: "storage",
 		},
 
 		// A non-exhaustive list of multi-part top-level domains. If a domain ends

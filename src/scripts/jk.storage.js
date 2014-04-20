@@ -70,6 +70,11 @@
 			return task.promise();
 		}
 
+		function _error(task, errorType, message)
+		{
+			task.reject({ type: errorType, message: message });
+		}
+
 		// Promise: Gets client synchronization status (true if client synchronizes, false otherwise).
 		function clientSynced()
 		{
@@ -99,8 +104,8 @@
 
 			var values = { synced: true, syncKey: syncKey };
 			
-			storageSet(chrome.storage.local, values)
-				.then(
+			storageSet(chrome.storage.local, values, "starting client synchronization")
+				.done(
 					function() {
 						isSyncedDataAvailable()
 						.done(function(dataAvailable) {
@@ -117,9 +122,9 @@
 		{
 			var task = new $.Deferred();
 
-			chrome.storage.local.remove(["synced", "syncKey"], function() {
-				task.resolve();
-			});
+			storageRemove(chrome.storage.local, ["synced", "syncKey"], "stopping client synchronization")
+				.done(task.resolve)
+				.fail(task.reject);
 
 			return task.promise();
 		}
@@ -128,9 +133,16 @@
 		{
 			var task = new $.Deferred();
 
-			storageSet(chrome.storage.sync, { synced: true })
-			.done(task.resolve)
-			.fail(function(error) { task.reject(error); });
+			if (_chromeStorage)
+			{
+				storageSet(chrome.storage.sync, { synced: true }, "initializing synchronized storage")
+					.done(task.resolve)
+					.fail(task.reject);
+			}
+			else
+			{
+				_error(task, constants.ERRORS.syncNotSupported);
+			}
 
 			return task.promise();
 		}
@@ -141,11 +153,13 @@
 
 			if (_chromeStorage)
 			{
-				chrome.storage.sync.clear(task.resolve);
+				storageClear(chrome.storage.sync, "clearing synchronized storage")
+					.done(task.resolve)
+					.fail(task.reject);
 			}
 			else
 			{
-				task.resolve();
+				_error(task, constants.ERRORS.syncNotSupported);
 			}
 
 			return task.promise();
@@ -192,26 +206,33 @@
 			return null;
 		}
 
+		function _makeContext(defaultMessage, args, argsMessageIndex)
+		{
+			var result = defaultMessage;
+			if (args.length > argsMessageIndex)
+			{
+				var params = Array.prototype.slice.call(args, 2);
+				result = utils.format.apply(window, params);
+				log.debug(result);
+			}
+			return result;
+		}
+
 		function storageGet(storage, keys) // , description, params
 		{
-			var task = new $.Deferred();
-			if (arguments.length > 2)
-			{
-				var params = Array.prototype.slice.call(arguments, 2);
+			var context = _makeContext("reading value of '{0}' from storage", arguments, 2);
 
-				log.debug.apply(window, params);
-			}
+			var task = new $.Deferred();
 
 			storage.get(keys, function(response)
 			{
 				var error = chrome.runtime.lastError;
+
 				if (error)
 				{
-					if (arguments.length > 2)
-					{
-						log.error("Error {0}: {1}", utils.format.apply(window, params), error);
-					}
-					task.reject(error);
+					var message = utils.format("Error {0}: {1}", context, error);
+					log.error(message);
+					_error(task, constants.ERRORS.storage, message);
 					return;
 				}
 
@@ -223,24 +244,19 @@
 
 		function storageSet(storage, values)
 		{
-			var task = new $.Deferred();
-			if (arguments.length > 2)
-			{
-				var params = Array.prototype.slice.call(arguments, 2);
+			var context = _makeContext("writing value of '{0}' to storage", arguments, 2);
 
-				log.debug.apply(window, params);
-			}
+			var task = new $.Deferred();
 
 			storage.set(values, function()
 			{
 				var error = chrome.runtime.lastError;
+
 				if (error)
 				{
-					if (arguments.length > 2)
-					{
-						log.error("Error {0}: {1}", utils.format.apply(window, params), error);
-					}
-					task.reject(error);
+					var message = utils.format("Error {0}: {1}", context, error);
+					log.error(message);
+					_error(task, constants.ERRORS.storage, message);
 					return;
 				}
 
@@ -249,6 +265,54 @@
 
 			return task.promise();
 		}
+
+		function storageRemove(storage, keys)
+		{
+			var context = _makeContext("removing '{0}' from storage", arguments, 2);
+
+			var task = new $.Deferred();
+
+			storage.remove(keys, function()
+			{
+				var error = chrome.runtime.lastError;
+				
+				if (error)
+				{
+					var message = utils.format("Error {0}: {1}", context, error);
+					log.error(message);
+					_error(task, constants.ERRORS.storage, message);
+					return;
+				}
+
+				task.resolve();
+			});
+
+			return task.promise();
+		}
+
+		function storageClear(storage)
+		{
+			var context = _makeContext("clearing storage", arguments, 1);
+
+			var task = new $.Deferred();
+
+			storage.clear(function() {
+				var error = chrome.runtime.lastError;
+
+				if (error)
+				{
+					var message = utils.format("Error {0}: {1}", context, error);
+					log.error(message);
+					_error(task, constants.ERRORS.storage, message);
+					return;
+				}
+
+				task.resolve();
+			});
+
+			return task.promise();
+		}
+
 
 		function getMaxItemSize(storage)
 		{
@@ -282,12 +346,7 @@
 
 					doLoad(task, storage, key, cryptKey);
 				}
-			).fail(
-				function(error)
-				{
-					task.reject(error);
-				}
-			);
+			).fail(task.reject);
 		}
 
 		function doLoad(task, storage, key, cryptKey)
@@ -312,12 +371,7 @@
 					// Our value is split into parts, so get those:
 					loadParts(task, storage, key, partKeys, cryptKey);
 				}
-			).fail(
-				function(error)
-				{
-					task.reject(error);
-				}
-			);
+			).fail(task.reject);
 		}
 
 		function loadParts(task, storage, key, partKeys, cryptKey)
@@ -333,12 +387,7 @@
 					}
 					loaded(task, key, result, cryptKey);
 				}
-			).fail(
-				function(error)
-				{
-					task.reject(error);
-				}
-			);
+			).fail(task.reject);
 		}
 
 		function saveToExtensionStorage(task, key, value, forceLocal)
@@ -349,7 +398,7 @@
 				return;
 			}
 
-			storageGet(chrome.storage.local, ["synced", "syncKey"], "key '{0}': loading synchronization info", key)
+			loadSynchronizationInfo()
 			.done(
 				function(response)
 				{
@@ -361,12 +410,7 @@
 					doSave(task, storage, key, value, cryptKey);
 				}
 			)
-			.fail(
-				function(error)
-				{
-					task.reject(error);
-				}
-			);
+			.fail(task.reject);
 		}
 
 		function doSave(task, storage, key, value, cryptKey)
@@ -406,12 +450,7 @@
 						saveParts(task, storage, key, value);
 					}
 				}
-			).fail(
-				function(error)
-				{
-					task.reject(error);
-				}
-			);
+			).fail(task.reject);
 		}
 
 		function saveParts(task, storage, key, value)
@@ -457,8 +496,8 @@
 					}
 					catch (error)
 					{
-						log.error("Error decrypting '{0}': {1}", key, error);
-						task.reject(constants.ERRORS.decrypt);
+						var message = utils.format("Error decrypting '{0}': {1}", key, error);
+						_error(task, constants.ERRORS.decrypt, message);
 						return;
 					}
 				}

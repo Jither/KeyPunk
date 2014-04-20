@@ -56,10 +56,9 @@
 				settings.load().done(updateState),
 				storage.clientSynced().done(clientSyncedLoaded),
 				storage.isSyncedDataAvailable().done(syncedDataAvailableLoaded)
-			).then(
-				loaded,
-				loadFailed
-			);
+			)
+			.done(loaded)
+			.fail(loadFailed);
 		}
 
 		function loaded()
@@ -70,13 +69,13 @@
 
 		function loadFailed(error)
 		{
-			switch (error)
+			switch (error.type)
 			{
 				case constants.ERRORS.decrypt:
 					dialogs.alert("Failed loading settings. Password is likely wrong.");
 					break;
 				default:
-					dialogs.alert("Failed loading settings: " + error);
+					dialogs.alert("Failed loading settings: " + error.message);
 					break;
 			}
 		}
@@ -146,7 +145,8 @@
 				{
 					if (yes)
 					{
-						dialogs.prompt("Please enter password to use for synchronization").done(
+						dialogs.prompt("Please enter password to use for synchronization")
+						.done(
 							function(syncKey)
 							{
 								if (syncKey)
@@ -168,28 +168,56 @@
 			);
 		}
 
+		function disableSync()
+		{
+			dialogs.confirm("Are you sure you want to disable synchronization?").done(
+				function(yes)
+				{
+					if (yes)
+					{
+						_disableSync(/* loadProfiles */ true)
+							.fail(disableSyncFailed);
+					}
+					else
+					{
+						updateSyncState();
+					}
+				}
+			);
+
+			function disableSyncFailed(error)
+			{
+				dialogs.alert("Failed disabling synchronization: " + error.message);
+			}
+		}
+
 		function _enableSync(syncKey)
 		{
+			// The steps are more readable with underscores 
+			/* jshint camelcase:false */
+
 			log.debug("Enabling synchronization...");
 
 			// Load profiles in case they need to be synced "up"
-			profiles.load().done(profilesLoaded);
+			profiles.load()
+				.done(step1_startSync)
+				.fail(syncFailed);
 
-			function profilesLoaded()
+			function step1_startSync()
 			{
-				storage.startSync(syncKey).done(syncStarted);
+				storage.startSync(syncKey)
+					.done(step2_initialSync)
+					.fail(syncFailed);
 			}
 
-			function syncStarted(syncDataAvailable)
+			function step2_initialSync(syncDataAvailable)
 			{
 				if (syncDataAvailable)
 				{
 					// Synced data is available - sync "down"
 					settings.load()
-					.then(
-						synced,
-						syncFailed
-					);
+						.done(step3_updateState)
+						.fail(syncFailed);
 				}
 				else
 				{
@@ -198,13 +226,13 @@
 						storage.initSyncedData(),
 						settings.save(),
 						profiles.save()
-					).then(
-						synced
-					);
+					)
+						.done(step3_updateState)
+						.fail(syncFailed);
 				}
 			}
 
-			function synced()
+			function step3_updateState()
 			{
 				_syncedDataAvailable = true;
 				_clientSynced = true;
@@ -215,79 +243,72 @@
 			{
 				var message;
 
-				switch (error)
+				switch (error.type)
 				{
 					case constants.ERRORS.decrypt:
 						message = "Failed to start synchronization. Check your password.";
 						break;
 					default:
-						message = "Failed to start synchronization: " + error;
+						message = "Failed to start synchronization: " + error.message;
 						break;
 				}
 				
 				dialogs.alert(message);
-				_disableSync();
+				_disableSync(/* transferProfiles */ false);
 			}
 		}
 
-		function disableSync()
+		function _disableSync(transferProfiles)
 		{
-			dialogs.confirm("Are you sure you want to disable synchronization?").done(
-				function(yes)
-				{
-					if (yes)
-					{
-						profiles.load().done(_disableSync);
-					}
-					else
-					{
-						updateSyncState();
-					}
-				}
-			);
-		}
+			// The steps are more readable with underscores 
+			/* jshint camelcase:false */
 
-		function _disableSync()
-		{
 			log.debug("Disabling synchronization...");
 
 			var task = $.Deferred();
 
-			// Disable sync
-			storage.stopSync().done(
-				function()
-				{
-					// Save settings locally
-					settings.save();
-					profiles.save();
-					_clientSynced = false;
-					updateSyncState();
-					task.resolve();
-				}
-			);
+			if (transferProfiles)
+			{
+				profiles.load()
+					.done(step1_stopSync)
+					.fail(task.reject);
+			}
+			else
+			{
+				step1_stopSync();
+			}
+
+			function step1_stopSync()
+			{
+				storage.stopSync()
+					.done(step2_syncAndUpdateState)
+					.fail(task.reject);
+			}
+
+			function step2_syncAndUpdateState()
+			{
+				// Save settings locally
+				settings.save();
+				profiles.save();
+				_clientSynced = false;
+				updateSyncState();
+				task.resolve();
+			}
 
 			return task.promise();
 		}
 
 		function clearSyncStorageClicked()
 		{
+			// The steps are more readable with underscores 
+			/* jshint camelcase:false */
+
 			dialogs.confirm("Are you sure you want to clear synchronized storage? This will make ALL synchronized clients lose their settings.").done(
 				function(yes)
 				{
 					if (yes)
 					{
-						_disableSync().done(
-							function()
-							{
-								storage.clearSync().done(
-									function()
-									{
-										_syncedDataAvailable = false;
-										updateSyncState();
-									}
-								);
-							}
-						);
+						step1_disableSync();
 					}
 					else
 					{
@@ -295,48 +316,97 @@
 					}
 				}
 			);
+
+			function step1_disableSync()
+			{
+				_disableSync(/* transferProfiles */ true)
+					.done(step2_clearSync)
+					.fail(clearSyncFailed);
+				}
+
+			function step2_clearSync()
+			{
+				storage.clearSync()
+					.done(step3_updateState)
+					.fail(clearSyncFailed);
+			}
+
+			function step3_updateState()
+			{
+				_syncedDataAvailable = false;
+				updateSyncState();
+			}
+
+			function clearSyncFailed(error)
+			{
+				dialogs.alert("Failed clearing synchronized data: " + error.message);
+				updateSyncState();
+			}
 		}
 
 		function importClicked()
 		{
-			profiles.load().then(
-				function()
-				{
-					dialogs.importData().then(
-						function(json)
-						{
-							var values;
-							try
-							{
-								values = JSON.parse(json);
-							}
-							catch (error)
-							{
-								dialogs.alert("Error in import data: " + error);
-								return;
-							}
+			// The steps are more readable with underscores 
+			/* jshint camelcase:false */
 
-							settings.importData(values.settings);
-							profiles.importData(values.profiles);
-						}
-					);
+			profiles.load()
+				.done(step1_showDialog)
+				.fail(importFailed);
+
+			function step1_showDialog()
+			{
+				dialogs.importData()
+					.then(step2_parse)
+					.fail(importFailed);
+			}
+
+			function step2_parse(json)
+			{
+				var values;
+				try
+				{
+					values = JSON.parse(json);
 				}
-			);
+				catch (error)
+				{
+					dialogs.alert("Error in import data: " + error);
+					return;
+				}
+
+				settings.importData(values.settings);
+				profiles.importData(values.profiles);
+			}
+
+			function importFailed(error)
+			{
+				dialogs.alert("Error during import: " + error.message);
+			}
 		}
 
 		function exportClicked()
 		{
-			profiles.load().then(
-				function() {
-					var values =
-					{
-						settings: settings.exportData(),
-						profiles: profiles.exportData()
-					};
+			// The steps are more readable with underscores 
+			/* jshint camelcase:false */
 
-					dialogs.exportData(JSON.stringify(values, null, "    "));
-				}
-			);
+			profiles.load()
+				.done(step1_exportData)
+				.fail(exportFailed);
+
+			function step1_exportData()
+			{
+				var values =
+				{
+					settings: settings.exportData(),
+					profiles: profiles.exportData()
+				};
+
+				dialogs.exportData(JSON.stringify(values, null, "    "));
+			}
+
+			function exportFailed(error)
+			{
+				dialogs.alert("Error during export: " + error.message);
+			}
 		}
 
 		function updateState()

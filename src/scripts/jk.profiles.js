@@ -94,8 +94,9 @@
 		function load()
 		{
 			var promise = storage.load("profiles");
-			promise.done(loaded);
-			promise.fail(loadFailed);
+			promise
+				.done(loaded)
+				.fail(loadFailed);
 			return promise;
 		}
 
@@ -123,7 +124,7 @@
 
 		function loadFailed(error)
 		{
-			log.error("Failed loading profiles: {0}", error);
+			log.error("Failed loading profiles: {0} ({1})", error.message, error.type);
 			notifyStatus("Failed loading profiles");
 		}
 
@@ -131,21 +132,21 @@
 		{
 			notifyStatus("Saving profiles...");
 			var promise = storage.save("profiles", profiles);
-			promise.always(saved);
+			promise
+				.done(saved)
+				.fail(saveFailed);
 			return promise;
 		}
 
-		function saved(error)
+		function saved()
 		{
-			if (!error)
-			{
-				notifyStatus("Profiles saved");
-			}
-			else
-			{
-				log.error("Profile save error: {0}", error);
-				notifyStatus("Failed saving profiles");
-			}
+			notifyStatus("Profiles saved");
+		}
+
+		function saveFailed(error)
+		{
+			log.error("Profile save error: {0} ({1})", error.message, error.type);
+			notifyStatus("Failed saving profiles");
 		}
 
 		function getProfileIdForInput(input)
