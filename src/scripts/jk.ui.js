@@ -273,7 +273,13 @@
 				var profile = profiles.getById($profile.val());
 				var masterPassword = $master.val();
 				var input = _rewiredInput || $input.val();
-				output = core.generate(masterPassword, input, profile.algorithm, profile.passwordLength, profile.alphabet, profile.modifier, profile.useAllSets);
+				var s = {
+					useKdf: settings.useKdf(),
+					kdf: settings.kdf(),
+					kdfIterations: settings.kdfIterations(),
+					kdfSalt: settings.kdfSalt()
+				};
+				output = core.generate(masterPassword, input, s, profile);
 			}
 
 			_currentOutput = output;

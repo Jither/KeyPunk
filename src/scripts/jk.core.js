@@ -10,29 +10,27 @@
 
 	jk.core = (function(settings, crypt)
 	{
-		function generate(masterPassword, input, algorithm, length, alphabetSets, modifier, mustUseCharactersFromAllSets)
+		function generate(masterPassword, input, settings, profile)
 		{
-			var result;
+			var masterKey = makeMasterKey(settings, masterPassword);
 
-			var masterKey = makeMasterKey(masterPassword);
-
-			result = _generate(masterKey, input, algorithm, length, alphabetSets, modifier);
+			var result = _generate(masterKey, input, profile);
 
 			// Only enforce characters from all alphabet sets if the length
 			// of the password is actually enough to hold a character from each set.
-			mustUseCharactersFromAllSets = mustUseCharactersFromAllSets && length >= alphabetSets.length;
+			var mustUseCharactersFromAllSets = profile.useAllSets && profile.passwordLength >= profile.alphabet.length;
 
 			if (mustUseCharactersFromAllSets)
 			{
-				result = ensureCharactersFromAllSets(result, alphabetSets);
+				result = ensureCharactersFromAllSets(result, profile.alphabet);
 			}
 
 			return result;
 		}
 
-		function makeMasterKey(password)
+		function makeMasterKey(settings, password)
 		{
-			if (!settings.useKdf())
+			if (!settings.useKdf)
 			{
 				// No key-derivation - just use password
 				return password;
@@ -41,18 +39,14 @@
 			// Note that our key derivation function does caching of keys, even in the case where
 			// Chrome extension lifetime undermines SJCL's own cache.
 
-			var kdf = settings.kdf();
-			var iterations = settings.kdfIterations();
-			var salt = settings.kdfSalt();
-			
-			var key;			
-			switch (kdf)
+			var key;
+			switch (settings.kdf)
 			{
 				case "pbkdf2-sha-256":
-					key = crypt.strPbkdf2(password, salt, iterations, 256);
+					key = crypt.strPbkdf2(password, settings.kdfSalt, settings.kdfIterations, 256);
 					break;
 				default:
-					throw "Unknown key derivation function: " + kdf;
+					throw "Unknown key derivation function: " + settings.kdf;
 			}
 
 			return key;
@@ -97,12 +91,14 @@
 			return value;
 		}
 
-		function _generate(masterPassword, input, algorithm, length, alphabetSets, modifier)
+		function _generate(masterPassword, input, profile)
 		{
-			var alphabet = alphabetSets.join("");
-			
+			var alphabet = profile.alphabet.join("");
+			var algorithm = profile.algorithm;
+			var length = profile.passwordLength;
+
 			input = input || "";
-			input += modifier || "";
+			input += profile.modifier || "";
 
 			var result = "";
 
@@ -118,6 +114,7 @@
 				// Hash a password value based on master password (key) and the input (message, e.g. domain name)
 				var hash = getHash(algorithm.name, message, masterPassword, algorithm.hmac);
 
+				hash.clamp();
 				result += hashToAlphabet(hash.words, alphabet);
 
 				iterationNumber++;
@@ -185,6 +182,7 @@
 			while (startIndex < hashLength)
 			{
 				var remainder = 0;
+
 				for (var index = startIndex; index < hashLength; index++)
 				{
 					// The maximum accurate integer value in JavaScript is 9007199254740992.
@@ -202,7 +200,6 @@
 					remainder = value % alphabetLength;
 					hash[index] = quotient;
 				}
-
 				result += alphabet[remainder];
 
 				// In the next iteration, skip all indices that have ended up zero:
@@ -220,4 +217,5 @@
 			getHash: getHash
 		};
 	}(jk.settings, jk.crypt));
+
 }(window.keypunk = window.keypunk || {}, _));
