@@ -152,10 +152,7 @@
 
 			if (useHMAC)
 			{
-				/*if ([SHA3_224, SHA3_256, SHA3_384].indexOf(algorithmName) >= 0)
-				{
-					throw "HMAC for SHA-3 is only supported for 512 bit hash length";
-				}*/
+				// Note on KeyPunk "standard": String inputs are to be treated as UTF-8 - CryptoJS does this already.
 				var hmacAlgo = CryptoJS.algo.HMAC.create(algorithm, key, cfg);
 				return hmacAlgo.finalize(message);
 			}
@@ -163,6 +160,7 @@
 			{
 				var input = key ? key + message : message;
 				var algo = algorithm.create(cfg);
+				// Note on KeyPunk "standard": String inputs are to be treated as UTF-8 - CryptoJS does this already.
 				return algo.finalize(input);
 			}
 		}
