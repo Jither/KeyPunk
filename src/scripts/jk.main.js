@@ -1,10 +1,6 @@
 /**
- * Main script...
- *
- * Yeah, this is mostly a hodgepodge of stuff that should be elsewhere
- * but had no elsewhere to be.
- *
- * The init() function *is*, however, where everything starts. Mostly.
+ * Main script... 
+ * Where everything in the popup (or index.html if running as a simple browser page) starts
  */
 
 (function(jk, $) {

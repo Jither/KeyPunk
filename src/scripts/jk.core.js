@@ -169,7 +169,7 @@
 		{
 			// Convert integral hash array to alphabet.
 			// In a language/framework with native support for big integers, the algorithm
-			// is simply to repeatedly divide the hash array (interpreted as a big-endian big integer)
+			// is simply to repeatedly divide the hash array (interpreted as an unsigned big-endian big integer)
 			// by the alphabet length, and using the division remainder (modulo) as index into the
 			// alphabet array. Here, we do it manually by long division.
 			var result = "";
@@ -193,9 +193,9 @@
 					// That's an OK safety margin, I think.
 
 					// CryptoJS uses signed integers - >>> 0 converts to unsigned:
-					var value = (hash[index] >>> 0) + remainder * 4294967296;
-					var quotient = Math.floor(value / alphabetLength);
-					remainder = value % alphabetLength;
+					var dividend = (hash[index] >>> 0) + remainder * 4294967296;
+					var quotient = Math.floor(dividend / alphabetLength);
+					remainder = dividend % alphabetLength;
 					hash[index] = quotient;
 				}
 				result += alphabet[remainder];

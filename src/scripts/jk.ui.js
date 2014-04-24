@@ -13,8 +13,8 @@
 	jk.ui = (function(settings, profiles, core, chromeHelper, dialogs, utils, constants, log) {
 		var
 			// MAIN
-			$master 			= $("#master"),
-			$confirmRow 		= $("#confirm-row"),
+			$master				= $("#master"),
+			$confirmRow			= $("#confirm-row"),
 			$confirm			= $("#confirm"),
 			$input				= $("#input"),
 			$profile			= $("#profile"),
@@ -22,35 +22,35 @@
 			$output				= $("#output"),
 			$outputPassword		= $("#output-password"),
 			$outputClipboard	= $("#output-clipboard"),
-			$status 			= $("#status"),
+			$status				= $("#status"),
 
 			$checksum			= $("#checksum"),
-			$copy 				= $("#copy"),
-			$fill 				= $("#fill"),
+			$copy				= $("#copy"),
+			$fill				= $("#fill"),
 
 			// PROFILES
 			$profilesProfile	= $("#profiles-profile"),
-			$algorithm 			= $("#algorithm"),
+			$algorithm			= $("#algorithm"),
 			$hmac				= $("#hmac"),
-			$passwordLength 	= $("#password-length"),
-			$alphabet 			= $("#alphabet"),
+			$passwordLength		= $("#password-length"),
+			$alphabet			= $("#alphabet"),
 			$domains			= $("#domains"),
-			$modifier 			= $("#modifier"),
-			$useAllSets 		= $("#use-all-sets"),
+			$modifier			= $("#modifier"),
+			$useAllSets			= $("#use-all-sets"),
 
-			$save 				= $("#save"),
+			$save				= $("#save"),
 			$duplicate			= $("#duplicate"),
 			$rename				= $("#rename"),
 			$remove				= $("#remove"),
 
 			// REWIRE
-			$rewireInput 		= $("#rewire-input"),
+			$rewireInput		= $("#rewire-input"),
 
 			// SHARED
 			$navigation			= $("nav"),
 			$sectionLinks		= $("nav ul li a"),
 			$sections			= $("section"),
-			$profiles 			= $(".profile"),
+			$profiles			= $(".profile"),
 
 			$fatalErrorMessage	= $("#fatal-error-message"),
 
@@ -124,6 +124,22 @@
 			$fatalErrorMessage.text(error);
 			$navigation.hide();
 			setCurrentSection("fatal-error");
+		}
+
+		// STATUS BAR
+
+		var timeoutClearStatus;
+
+		function clearStatus()
+		{
+			$status.text("");
+		}
+
+		function status(message)
+		{
+			clearTimeout(timeoutClearStatus);
+			$status.text(message);
+			timeoutClearStatus = setTimeout(clearStatus, 3000);
 		}
 
 		function setCurrentSection(section)
@@ -526,22 +542,6 @@
 				var option = $(utils.format('<option value="{0}">{1}</option>', profile.id, profile.id));
 				$profiles.append(option);
 			}
-		}
-
-		// STATUS BAR
-
-		var timeoutClearStatus;
-
-		function clearStatus()
-		{
-			$status.text("");
-		}
-
-		function status(message)
-		{
-			clearTimeout(timeoutClearStatus);
-			$status.text(message);
-			timeoutClearStatus = setTimeout(clearStatus, 3000);
 		}
 
 		return {

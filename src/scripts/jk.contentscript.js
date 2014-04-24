@@ -25,7 +25,7 @@
 
 	function getPasswordInputs()
 	{
-		// No need to load on every page for this...
+		// No need to load jQuery on every page for this...
 		return document.querySelectorAll("input[type=password]");
 	}
 

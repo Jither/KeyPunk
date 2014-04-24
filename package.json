@@ -8,7 +8,10 @@
 		"grunt":						"~0.4.4",
 		"grunt-contrib-uglify":			"*",
 		"grunt-contrib-jshint":			"*",
+		"grunt-contrib-copy":			"*",
+		"grunt-contrib-clean":			"*",
 		"grunt-htmlhint":				"*",
+		"grunt-processhtml":			"*",
 		"matchdep":						"*"
 	}
 }
