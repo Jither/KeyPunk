@@ -1,3 +1,5 @@
+/* global ZeroClipboard */
+
 /** 
  * (Mostly) all of the UI stuff.
  * 
@@ -132,13 +134,20 @@
 
 		function clearStatus()
 		{
-			$status.text("");
+			$status.html("&nbsp;");
 		}
 
 		function status(message)
 		{
 			clearTimeout(timeoutClearStatus);
-			$status.text(message);
+			if (!message)
+			{
+				clearStatus();
+			}
+			else
+			{
+				$status.text(message);
+			}
 			timeoutClearStatus = setTimeout(clearStatus, 3000);
 		}
 
@@ -177,7 +186,6 @@
 			$profile.on("change", mainProfileChanged);
 			$showPassword.on("change", showPasswordChanged);
 
-			$copy.click(copyClicked);
 			$fill.click(fillPasswords);
 			$checksum.click(checksumClicked);
 
@@ -186,6 +194,29 @@
 			$confirm.val(masterPassword);
 
 			$showPassword.prop("checked", settings.showPassword());
+
+			setupClipboardHandling();
+		}
+
+		function setupClipboardHandling()
+		{
+			if (!window.ZeroClipboard)
+			{
+				// Handle without ZeroClipboard:
+				$copy.click(copyClicked);
+				return;
+			}
+
+			var client = new ZeroClipboard($copy, {
+				swfPath: "scripts/ZeroClipboard.swf"
+			});
+			
+			client.on("ready", function() {
+				client.on("copy", function(e) {
+					e.clipboardData.setData("text/plain", _currentOutput);
+					status("Password copied to clipboard");
+				});
+			});
 		}
 
 		function isPasswordValid()
@@ -311,7 +342,6 @@
 			$outputClipboard.focus().select();
 			document.execCommand("SelectAll");
 			document.execCommand("Copy");
-
 			status("Password copied to clipboard");
 		}
 

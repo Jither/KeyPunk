@@ -53,7 +53,7 @@ KeyPunk is not yet ready for primetime! It:
 
 - has quite a few known issues.
 - hasn't been tested thoroughly in any aspect yet.
-- has some essential missing features (such as backup/export).
+- has some essential missing features.
 - only exists on one platform at the moment.
 
 Right now, it's very much a work in progress, and if you use it, you do so at
@@ -127,7 +127,8 @@ cannot be as high as is usually recommended, calculating, say, 1000 iterations o
 still takes more time than no iterations. And it will need to be done for every attempted
 master password.
 
-For key derivation, KeyPunk uses PBKDF2 with SHA-256 as the underlying hash function.
+For key derivation, KeyPunk uses [PBKDF2](http://en.wikipedia.org/wiki/PBKDF2) with
+SHA-256 as the underlying hash function.
 
 PBKDF2 is mostly known for its use in hashing passwords on the authenticating side - e.g.
 for database storage. In that use case, the best practice is to make a cryptographically
@@ -165,7 +166,7 @@ By default, KeyPunk is set up for a compromise between security and convenience,
 it *is* opinionated about certain security considerations:
 
 - The master password cannot be stored anywhere except in memory. This means it lives
-  for the duration of the browser session. Even this can (in time) be disabled, requiring
+  for the duration of the browser session. Even this can be disabled, requiring
   the user to enter the master password every time the extension popup is opened.
   The option indicating whether to store master password in memory is stored locally to
   disk, not synced, allowing different policies for different clients, even if syncing
@@ -177,8 +178,8 @@ it *is* opinionated about certain security considerations:
 
 - Profiles and settings may be stored in Chrome's synced storage in order to sync
   between different clients. Because Chrome storage isn't encrypted, KeyPunk does
-  client side encryption using the Stanford Javascript Cryptography Library with a
-  key provided by the user. Although Javascript encryption isn't exactly bullet
+  client side encryption using the [Stanford Javascript Cryptography Library](http://bitwiseshiftleft.github.io/sjcl/)
+  with a key provided by the user. Although Javascript encryption isn't exactly bullet
   proof, SJCL is the most trustworthy implementation, and any hint of the master
   password itself is obviously kept out of synced data. Still, the synced data *does*
   include potential "salts", since the choice of hash algorithm, alphabet, length, 

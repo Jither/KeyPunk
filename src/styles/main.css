@@ -5,14 +5,31 @@ html, body, h1, h2, h3, h4, h5, h6, p, form
 	padding: 0;
 }
 
-html, body, input, select, option, textarea
-{
-	font: 13px 'Chrome Droid Sans', 'Droid Sans Fallback', 'Lucida Grande', sans-serif;
-}
-
 html
 {
+	font: 13px 'Chrome Droid Sans', 'Droid Sans Fallback', 'Lucida Grande', sans-serif;
 	min-height: 300px;
+}
+
+body, input, select, option, textarea, button
+{
+	font: inherit;
+}
+
+header
+{
+	display: none;
+}
+
+h1
+{
+	font-size: 24px;
+	font-weight: normal;
+}
+
+#container
+{
+	width: 300px;
 }
 
 a
@@ -52,6 +69,7 @@ nav
 {
 	padding: 5px;
 	margin-bottom: 5px;
+	width: 100%;
 }
 
 nav ul
@@ -84,7 +102,7 @@ nav a.active
 
 section
 {
-	width: 300px;
+	width: 100%;
 }
 
 section > div > label
@@ -215,7 +233,6 @@ input.rewired
 	width: 100%;
 	padding: 2px 5px;
 	bottom: 0;
-	height: 18px;
 	background: #0074D9;
 	color: #ffffff;
 }
@@ -237,4 +254,9 @@ input.rewired
 	list-style-position: inside;
 	padding: 0 0 5px 0.5em;
 	margin: 0;
+}
+
+#about li
+{
+	margin: 0 0 5px 0;
 }

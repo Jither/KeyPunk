@@ -8,6 +8,7 @@ module.exports = function(grunt)
 	grunt.initConfig({
 		pkg: grunt.file.readJSON("package.json"),
 		cryptoBanner: grunt.file.read("src/scripts/crypto/_banner.js"),
+		webDest: "bin/web",
 		extensionDest: "bin/chrome-extension",
 
 		htmlhint:
@@ -67,19 +68,36 @@ module.exports = function(grunt)
 		},
 		clean:
 		{
+			web: ["<%= webDest %>"],
 			extension: ["<%= extensionDest %>"]
 		},
 		copy:
 		{
+			common:
+			{
+				files:
+				[
+					{ expand: true, cwd: "src/styles/", src: "*.css", dest: "<%= taskDest %>/styles/" },
+					{ expand: true, cwd: "src/images/", src: "*.*", dest: "<%= taskDest %>/images/" },
+					{ expand: true, cwd: "src/scripts/", src: "*.*", dest: "<%= taskDest %>/scripts/", filter: function(src) {
+						return	!grunt.file.isMatch({ matchBase: true }, "jk.*.js", src)	&&
+								!grunt.file.isMatch({ matchBase: true }, "ZeroClipboard.*", src);
+					}},
+					{ src: "src/scripts/crypto/sjcl.js", dest: "<%= taskDest %>/scripts/sjcl.js" }
+				]
+			},
 			extension:
 			{
 				files:
 				[
-					{ src: "src/manifest.json", dest: "<%= extensionDest %>/manifest.json" },
-					{ expand: true, cwd: "src/styles/", src: "*.css", dest: "<%= extensionDest %>/styles/" },
-					{ expand: true, cwd: "src/images/", src: "*.*", dest: "<%= extensionDest %>/images/" },
-					{ expand: true, cwd: "src/scripts/", src: "*.*", dest: "<%= extensionDest %>/scripts/", filter: function(src) { return !grunt.file.isMatch({ matchBase: true }, "jk.*.js", src); } },
-					{ src: "src/scripts/crypto/sjcl.js", dest: "<%= extensionDest %>/scripts/sjcl.js" }
+					{ src: "src/manifest.json", dest: "<%= taskDest %>/manifest.json" }
+				]
+			},
+			web:
+			{
+				files:
+				[
+					{ expand: true, cwd: "src/scripts", src: "ZeroClipboard.*", dest: "<%= taskDest %>/scripts/" }
 				]
 			}
 		},
@@ -93,7 +111,7 @@ module.exports = function(grunt)
 				},
 				files:
 				{
-					"<%= extensionDest %>/scripts/crypto.min.js":
+					"<%= taskDest %>/scripts/crypto.min.js":
 					[
 						"src/scripts/crypto/core.js",
 						"src/scripts/crypto/x64-core.js",
@@ -108,11 +126,11 @@ module.exports = function(grunt)
 					]
 				}
 			},
-			extension:
+			common:
 			{
 				files:
 				{
-					"<%= extensionDest %>/scripts/jk.shared.min.js":
+					"<%= taskDest %>/scripts/jk.shared.min.js":
 					[
 						"src/scripts/jk.constants.js",
 						"src/scripts/jk.utils.js",
@@ -125,32 +143,91 @@ module.exports = function(grunt)
 						"src/scripts/jk.profiles.js",
 						"src/scripts/jk.dialogs.js"
 					],
-					"<%= extensionDest %>/scripts/jk.popup.min.js":
+					"<%= taskDest %>/scripts/jk.popup.min.js":
 					[
 						"src/scripts/jk.ui.js",
 						"src/scripts/jk.main.js"
 					],
-					"<%= extensionDest %>/scripts/jk.options.min.js":
+					"<%= taskDest %>/scripts/jk.options.min.js":
 					[
 						"src/scripts/jk.options.js"
 					]
+				}
+			},
+			extension:
+			{
+				files:
+				{
+					"<%= taskDest %>/scripts/jk.contentscript.js": ["src/scripts/jk.contentscript.js"],
+					"<%= taskDest %>/scripts/jk.background.js": ["src/scripts/jk.background.js"]
 				}
 			}
 		},
 		processhtml:
 		{
-			extension:
-			{
+			options: {
+				strip: true
+			},
+			extension: {
 				files:
 				{
-					"<%= extensionDest %>/index.html": ["src/index.html"],
-					"<%= extensionDest %>/options.html": ["src/options.html"]
+					"<%= taskDest %>/index.html": ["src/index.html"],
+					"<%= taskDest %>/options.html": ["src/options.html"]
+				}
+			},
+			web: {
+				files:
+				{
+					"<%= taskDest %>/index.html": ["src/index.html"],
+					"<%= taskDest %>/options.html": ["src/options.html"]
 				}
 			}
 		}
 	});
 
+	grunt.registerTask("init", "Initializes target properties", function(target) {
+		var dest;
+		grunt.log.writeln("Target:", target);
+		switch (target)
+		{
+			case "web": dest = grunt.config.get("webDest"); break;
+			case "extension": dest = grunt.config.get("extensionDest"); break;
+		}
+		grunt.log.writeln("Setting destination to:", dest);
+		grunt.config.set("taskDest", dest);
+	});
+	
 	grunt.registerTask("default", ["jshint", "htmlhint"]);
-	grunt.registerTask("extension", ["jshint", "htmlhint", "copy:extension", "uglify:crypto", "uglify:extension", "processhtml:extension"]);
-	grunt.registerTask("clean-extension", ["clean:extension", "extension"]);
+	
+	grunt.registerTask("common", [
+		"default",
+		"copy:common",
+		"uglify:crypto",
+		"uglify:common"
+	]);
+	
+	grunt.registerTask("extension", [
+		"init:extension",
+		"common",
+		"copy:extension",
+		"uglify:extension",
+		"processhtml:extension"
+	]);
+	
+	grunt.registerTask("web", [
+		"init:web",
+		"common",
+		"copy:web",
+		"processhtml:web"
+	]);
+	
+	grunt.registerTask("clean-extension", [
+		"clean:extension",
+		"extension"]
+	);
+	
+	grunt.registerTask("clean-web", [
+		"clean:web",
+		"web"
+	]);
 };

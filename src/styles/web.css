@@ -1,0 +1,73 @@
+/**
+ * Styles specific for web version
+ */
+
+html, body
+{
+	height: 100%;
+}
+
+html
+{
+	font-size: 15px;
+	background: #f5f5f5 no-repeat;
+	background-image: -webkit-linear-gradient(top, #F5F5F5, #e5e5e5);
+    background-image: -moz-linear-gradient(top , #F5F5F5, #e5e5e5);
+    background-image: -ms-linear-gradient(top , #F5F5F5, #e5e5e5);
+    background-image: linear-gradient(top , #F5F5F5, #e5e5e5);
+}
+
+header
+{
+	display: block;
+	padding: 10px;
+	background: #0074D9;
+	color: #ffffff;
+}
+
+#container {
+	width: auto;
+	max-width: 480px;
+	margin: 0 auto;
+	background: #ffffff;
+	padding: 10px;
+}
+
+#status
+{
+	position: static;
+	width: 100%;
+	padding: 2px 5px;
+	background: #0074D9;
+	color: #ffffff;
+	box-sizing: border-box;
+}
+
+@media (min-width:500px)
+{
+	header {
+		margin-bottom: 20px;
+	}
+
+	#container {
+		border-radius: 5px;
+
+		-moz-box-shadow: 0 0 5px #aaaaaa;
+		-webkit-box-shadow: 0 0 5px#aaaaaa;
+		box-shadow: 0 0 5px #aaaaaa;
+	}
+
+	#status {
+		position: fixed;
+		bottom: 0;
+	}
+}
+
+/* No fill functionality in web version */
+#fill {
+	display: none;
+}
+
+section {
+	padding-bottom: 5px;
+}

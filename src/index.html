@@ -5,124 +5,141 @@
 		<title>KeyPunk</title>
 		<link rel="stylesheet" href="styles/main.css" />
 		<link rel="stylesheet" href="styles/dialogs.css" />
+		<!-- build:remove:extension -->
+		<link rel="stylesheet" href="styles/web.css" />
+		<!-- /build -->
 	</head>
 	<body>
-		<nav>
-			<ul>
-				<li><a href="#main">Main</a></li>
-				<li><a href="#profiles">Profiles</a></li>
-				<li><a href="#rewire">Rewire</a></li>
-				<li><a href="#about">About</a></li>
-			</ul>
-		</nav>
+		<header>
+			<h1>KeyPunk</h1>
+		</header>
 
-		<section id="main" spellcheck="false">
-			<div>
-				<label for="master">Master password <button id="checksum">Save checksum</button></label>
-				<input id="master" type="password" />
-			</div>
-			<div id="confirm-row">
-				<label for="confirm">Confirm password</label>
-				<input id="confirm" type="password" />
-			</div>
-			<div>
-				<label for="profile">Profile</label>
-				<select id="profile" class="profile"></select>
-			</div>
-			<div>
-				<label for="input">Input</label>
-				<input id="input" type="text" />
-			</div>
-			<div>
-				<label for="output">Password</label>
-				<input id="output" type="text" readonly="readonly" />
-				<input id="output-password" type="password" readonly="readonly" />
-				<input id="output-clipboard" type="text" />
-			</div>
-			<div>
-				<p>
-					<input id="show-password" type="checkbox" />
-					<label for="show-password">Show Password</label>
-				</p>
-			</div>
-			<div>
-				<button id="fill">Fill</button>
-				<button id="copy">Copy</button>
-			</div>
-		</section>
+		<div id="container">
+			<nav>
+				<ul>
+					<li><a href="#main">Main</a></li>
+					<li><a href="#profiles">Profiles</a></li>
+					<li><a href="#rewire">Rewire</a></li>
+					<li><a href="#about">About</a></li>
+				</ul>
+			</nav>
 
-		<section id="profiles" spellcheck="false">
-			<div>
-				<label for="profiles-profile">Profile</label>
-				<select id="profiles-profile" class="profile"></select>
-			</div>
-			<div>
-				<label for="algorithm">Hash</label>
+			<section id="main" spellcheck="false">
 				<div>
-					<select id="algorithm"></select>
-					<label for="hmac">HMAC</label>
-					<input id="hmac" type="checkbox" />
+					<label for="master">Master password <button id="checksum">Save checksum</button></label>
+					<input id="master" type="password" />
 				</div>
-			</div>
-			<div>
-				<label for="password-length">Password Length</label>
-				<input id="password-length" type="number" pattern="\d+" min="1" max="2048" />
-			</div>
-			<div>
-				<label for="alphabet">Alphabet</label>
-				<textarea id="alphabet"></textarea>
-				<p>
-					<input id="use-all-sets" type="checkbox" />
-					<label for="use-all-sets">Must use all alphabet sets</label>
-				</p>
-			</div>
-			<div>
-				<label for="domains">Domains</label>
-				<textarea id="domains"></textarea>
-			</div>
-			<div>
-				<label for="modifier">Modifier</label>
-				<input id="modifier" type="text" />
-			</div>
-			<div>
-				<button id="save">Save</button>
-				<button id="duplicate">Duplicate</button>
-				<button id="rename">Rename</button>
-				<button id="remove">Delete</button>
-			</div>
-		</section>
+				<div id="confirm-row">
+					<label for="confirm">Confirm password</label>
+					<input id="confirm" type="password" />
+				</div>
+				<div>
+					<label for="profile">Profile</label>
+					<select id="profile" class="profile"></select>
+				</div>
+				<div>
+					<label for="input">Input</label>
+					<input id="input" type="text" />
+				</div>
+				<div>
+					<label for="output">Password</label>
+					<input id="output" type="text" readonly="readonly" />
+					<input id="output-password" type="password" readonly="readonly" />
+					<input id="output-clipboard" type="text" />
+				</div>
+				<div>
+					<p>
+						<input id="show-password" type="checkbox" />
+						<label for="show-password">Show Password</label>
+					</p>
+				</div>
+				<div>
+					<button id="fill">Fill</button>
+					<button id="copy">Copy</button>
+				</div>
+			</section>
 
-		<section id="rewire" spellcheck="false">
-			<div>
-				<label for="rewire-input">Rewire inputs</label>
-				<textarea id="rewire-input"></textarea>
-			</div>
-		</section>
+			<section id="profiles" spellcheck="false">
+				<div>
+					<label for="profiles-profile">Profile</label>
+					<select id="profiles-profile" class="profile"></select>
+				</div>
+				<div>
+					<label for="algorithm">Hash</label>
+					<div>
+						<select id="algorithm"></select>
+						<label for="hmac">HMAC</label>
+						<input id="hmac" type="checkbox" />
+					</div>
+				</div>
+				<div>
+					<label for="password-length">Password Length</label>
+					<input id="password-length" type="number" pattern="\d+" min="1" max="2048" />
+				</div>
+				<div>
+					<label for="alphabet">Alphabet</label>
+					<textarea id="alphabet"></textarea>
+					<p>
+						<input id="use-all-sets" type="checkbox" />
+						<label for="use-all-sets">Must use all alphabet sets</label>
+					</p>
+				</div>
+				<div>
+					<label for="domains">Domains</label>
+					<textarea id="domains"></textarea>
+				</div>
+				<div>
+					<label for="modifier">Modifier</label>
+					<input id="modifier" type="text" />
+				</div>
+				<div>
+					<button id="save">Save</button>
+					<button id="duplicate">Duplicate</button>
+					<button id="rename">Rename</button>
+					<button id="remove">Delete</button>
+				</div>
+			</section>
 
-		<section id="about">
-			<h2>KeyPunk</h2>
-			<p>Copyright &copy; 2014 Jimmi Thøgersen</p>
-			<p>Based on ideas from <a href="http://www.passwordmaker.org">PasswordMaker</a>.</p>
+			<section id="rewire" spellcheck="false">
+				<div>
+					<label for="rewire-input">Rewire inputs</label>
+					<textarea id="rewire-input"></textarea>
+				</div>
+			</section>
 
-			<p>Includes code from:</p>
-			<ul>
-				<li><a href="https://code.google.com/p/crypto-js/">Crypto-JS</a></li>
-				<li><a href="http://bitwiseshiftleft.github.io/sjcl/">Stanford Javascript Cryptographic Library</a></li>
-				<li><a href="http://jquery.com/">jQuery</a></li>
-				<li><a href="http://underscorejs.org/">Underscore.js</a></li>
-			</ul>
-		</section>
+			<section id="about">
+				<h2>KeyPunk</h2>
+				<p>Copyright &copy; 2014 Jimmi Thøgersen</p>
+				<p>Based on ideas from <a href="http://www.passwordmaker.org">PasswordMaker</a>.</p>
 
-		<section id="fatal-error">
-			<h2>Oops!</h2>
-			<div id="fatal-error-message"></div>
-		</section>
+				<p>Includes code from:</p>
+				<ul>
+					<li><a href="https://code.google.com/p/crypto-js/">Crypto-JS</a></li>
+					<li><a href="http://bitwiseshiftleft.github.io/sjcl/">Stanford Javascript Cryptographic Library</a></li>
+					<li><a href="http://jquery.com/">jQuery</a></li>
+					<li><a href="http://underscorejs.org/">Underscore.js</a></li>
+					<!-- build:remove:extension -->
+					<li><a href="http://zeroclipboard.org/">ZeroClipboard</a></li>
+					<!-- /build -->
+				</ul>
+			</section>
+
+			<section id="fatal-error">
+				<h2>Oops!</h2>
+				<div id="fatal-error-message"></div>
+			</section>
+
+		</div>
 
 		<footer id="status">&nbsp;</footer>
 
 		<script src="scripts/jquery-2.1.0.min.js"></script>
 		<script src="scripts/underscore-min.js"></script>
 		
+		<!-- build:remove:extension -->
+		<script src="scripts/ZeroClipboard.min.js"></script>
+		<!-- /build -->
+
 		<!-- build:js scripts/crypto.min.js -->
 		<script src="scripts/crypto/core.js"></script>
 		<script src="scripts/crypto/x64-core.js"></script>
