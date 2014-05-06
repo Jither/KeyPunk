@@ -1,30 +1,23 @@
 {
 	"manifest_version": 2,
-	"name": "KeyPunk",
+	"name": "KeyPunk Password Generator",
+	"short_name": "KeyPunk",
+	"version": "0.5",
+
 	"description": "Password Generator",
-	"version": "0.9",
+	"icons":
+	{
+		"16": "images/icon_16.png",
+		"48": "images/icon_48.png",
+		"128": "images/icon_128.png"
+	},
 
-	"permissions":
-	[
-		"clipboardWrite",
-		"storage",
-		"tabs"
-	],
-
+	"author": "Jither",
 	"background":
 	{
 	    "scripts": ["scripts/jk.background.js"]
 	},
 
-	"options_page": "options.html",
-
-	"content_scripts":
-	[
-	    {
-	    	"matches": [ "http://*/*", "https://*/*" ],
-	    	"js": ["scripts/jk.contentscript.js"]
-	    }
-  	],
 
 	"browser_action":
 	{
@@ -35,10 +28,20 @@
 		"default_popup": "index.html"
 	},
 	
-	"icons":
-	{
-		"16": "images/icon_16.png",
-		"48": "images/icon_48.png",
-		"128": "images/icon_128.png"
-	}
+	"permissions":
+	[
+		"clipboardWrite",
+		"storage",
+		"tabs"
+	],
+
+	"options_page": "options.html",
+
+	"content_scripts":
+	[
+	    {
+	    	"matches": [ "http://*/*", "https://*/*" ],
+	    	"js": ["scripts/jk.contentscript.js"]
+	    }
+  	]
 }

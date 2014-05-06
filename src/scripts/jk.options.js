@@ -25,7 +25,9 @@
 			$export				= $("#export"),
 
 			_clientSynced,
-			_syncedDataAvailable
+			_syncedDataAvailable,
+
+			rxHexString = /^(?:[0-9a-f][0-9a-f])+$/i
 			;
 
 		function init()
@@ -118,8 +120,14 @@
 
 		function kdfSaltChanged()
 		{
-			var salt = $kdfSalt.val();
-			settings.kdfSalt(salt);
+			var salt = $kdfSalt.val().trim();
+			var valid = rxHexString.test(salt);
+			log.dump(salt, valid);
+			$kdfSalt.toggleClass("error", !valid);
+			if (valid)
+			{
+				settings.kdfSalt(salt);
+			}
 		}
 
 		function syncChanged()

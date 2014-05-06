@@ -99,11 +99,19 @@ input[type="checkbox"]
 input:not([type="checkbox"]), select
 {
 	width: 300px;
+	padding: 2px;
+	border: 1px solid #b0b0b0;
 }
 
 input[type="number"]
 {
 	width: 80px;
+}
+
+input.error
+{
+	background-color: #ffeeee;
+	border: 1px solid #660000 !important;
 }
 
 label
