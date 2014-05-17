@@ -17,6 +17,7 @@
 			$kdfIterations 		= $("#kdf-iterations"),
 			$kdfSalt			= $("#kdf-salt"),
 
+			$optionsSync		= $("#options-sync"),
 			$syncedDataAvailable= $("#synced-data-available"),
 			$sync 				= $("#sync"),
 			$clearSyncStorage	= $("#clear-sync-storage"),
@@ -32,6 +33,7 @@
 
 		function init()
 		{
+			$optionsSync.toggle(storage.canSync());
 			$kdf.empty();
 			for (var kdf in constants.KEY_DERIVATION_FUNCTIONS)
 			{

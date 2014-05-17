@@ -98,6 +98,11 @@
 			return task.promise();
 		}
 
+		function canSync()
+		{
+			return !!_chromeStorage;
+		}
+
 		function startSync(syncKey)
 		{
 			var task = new $.Deferred();
@@ -522,6 +527,7 @@
 			stopSync: stopSync,
 			clearSync: clearSync,
 			initSyncedData: initSyncedData,
+			canSync: canSync,
 			isSyncedDataAvailable: isSyncedDataAvailable,
 		};
 	}(jk.crypt, jk.utils, jk.constants, jk.log));

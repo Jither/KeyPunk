@@ -53,12 +53,18 @@
 			});
 		}
 
+		function openOptions()
+		{
+			chrome.tabs.create({'url': chrome.extension.getURL("options.html") } );
+		}
+
 		return {
 			isExtension: isExtension,
 			cache: cache,
 			getCurrentTab: getCurrentTab,
 			fillPasswords: fillPasswords,
-			hasPasswordInputs: hasPasswordInputs
+			hasPasswordInputs: hasPasswordInputs,
+			openOptions: openOptions
 		};
 	}());
 

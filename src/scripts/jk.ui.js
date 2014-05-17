@@ -29,6 +29,7 @@
 			$checksum			= $("#checksum"),
 			$copy				= $("#copy"),
 			$fill				= $("#fill"),
+			$options			= $("#options"),
 
 			// PROFILES
 			$profilesProfile	= $("#profiles-profile"),
@@ -188,6 +189,7 @@
 
 			$fill.click(fillPasswords);
 			$checksum.click(checksumClicked);
+			$options.click(optionsClicked);
 
 			var masterPassword = settings.masterPassword();
 			$master.val(masterPassword);
@@ -343,6 +345,19 @@
 			document.execCommand("SelectAll");
 			document.execCommand("Copy");
 			status("Password copied to clipboard");
+		}
+
+		function optionsClicked()
+		{
+			log.debug("options");
+			if (chromeHelper.isExtension())
+			{
+				chromeHelper.openOptions();
+			}
+			else
+			{
+				window.open("options.html");
+			}
 		}
 
 		// Fills password fields on current tab with output
