@@ -11,6 +11,11 @@ html
 	min-height: 300px;
 }
 
+html, body
+{
+	overflow: hidden;
+}
+
 body, input, select, option, textarea, button
 {
 	font: inherit;
